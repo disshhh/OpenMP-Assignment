@@ -40,8 +40,7 @@ typedef enum
     FLUSH,
     FLUSH_INVACK,
     EVICT_SHARED,
-    EVICT_MODIFIED,
-    INVACK // Added this one new transaction type
+    EVICT_MODIFIED
 } transactionType;
 
 typedef struct instruction
@@ -287,17 +286,7 @@ int main(int argc, char *argv[])
                     if (node.cache[cacheIndex].address == msg.address)
                     {
                         node.cache[cacheIndex].state = INVALID;
-                        // Added these 3 lines to send INVACK
-                        msgReply.type = INVACK;
-                        msgReply.sender = threadId;
-                        msgReply.address = msg.address;
-                        sendMessage(msg.sender, msgReply);
                     }
-                    break;
-
-                // Added this new case for INVACK
-                case INVACK:
-                    // Simple acknowledgment - no state change needed
                     break;
 
                 case WRITE_REQUEST:
